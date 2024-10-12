@@ -1,0 +1,32 @@
+﻿@model  PruebaTecnica.DTO.Account.UsersDTO
+
+<h2>Detalles del Usuario</h2>
+
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            <h4>Detalles del Usuario</h4>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4 text-center">
+                    <div class="bg-light rounded-circle" style="width: 150px; height: 150px; display: inline-flex; align-items: center; justify-content: center;">
+                        <i class="fas fa-user fa-3x text-muted"></i>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <h5 class="card-title">@Model.FullName</h5>
+                    <p class="card-text"><strong>Email:</strong> @Model.Email</p>
+                    <p class="card-text"><strong>Nombre de Usuario:</strong> @Model.UserName</p>
+                    <a href="@Url.Action("Index", "Account")" class="btn btn-secondary">Volver a la lista</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha384-DyZvT0M4c4iwPe2BBGe7IMTbA+2rZ4U0Ek4b1Td3T7rGZIkp2XWGHF+fXXeFzD7q" crossorigin="anonymous">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

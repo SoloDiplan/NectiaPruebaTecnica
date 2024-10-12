@@ -1,0 +1,264 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="PruebaTecnicaModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Brand">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="description" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Consoles">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="brand_id" Type="int" Nullable="false" />
+          <Property Name="release_date" Type="date" Nullable="false" />
+          <Property Name="storage_capacity" Type="int" Nullable="false" />
+          <Property Name="price" Type="decimal" Precision="10" Scale="2" Nullable="false" />
+          <Property Name="comment" Type="varchar" MaxLength="150" />
+          <Property Name="user_created_id" Type="int" Nullable="false" />
+          <Property Name="created_date" Type="date" Nullable="false" />
+          <Property Name="user_modified_id" Type="int" />
+          <Property Name="modified_date" Type="date" />
+          <Property Name="is_active" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Usuarios">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="email" Type="varchar" MaxLength="256" />
+          <Property Name="password" Type="varchar" MaxLength="50" />
+          <Property Name="username" Type="varchar" MaxLength="50" />
+          <Property Name="full_name" Type="varchar" MaxLength="50" />
+          <Property Name="is_active" Type="bit" />
+          <Property Name="salt" Type="varchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Consoles_Brand">
+          <End Role="Brand" Type="Self.Brand" Multiplicity="1" />
+          <End Role="Consoles" Type="Self.Consoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Brand">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Consoles">
+              <PropertyRef Name="brand_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Consoles_Consoles">
+          <End Role="Usuarios" Type="Self.Usuarios" Multiplicity="1" />
+          <End Role="Consoles" Type="Self.Consoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuarios">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Consoles">
+              <PropertyRef Name="user_created_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Consoles_Usuarios">
+          <End Role="Usuarios" Type="Self.Usuarios" Multiplicity="0..1" />
+          <End Role="Consoles" Type="Self.Consoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuarios">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Consoles">
+              <PropertyRef Name="user_modified_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="PruebaTecnicaModelStoreContainer">
+          <EntitySet Name="Brand" EntityType="Self.Brand" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Consoles" EntityType="Self.Consoles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Usuarios" EntityType="Self.Usuarios" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Consoles_Brand" Association="Self.FK_Consoles_Brand">
+            <End Role="Brand" EntitySet="Brand" />
+            <End Role="Consoles" EntitySet="Consoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Consoles_Consoles" Association="Self.FK_Consoles_Consoles">
+            <End Role="Usuarios" EntitySet="Usuarios" />
+            <End Role="Consoles" EntitySet="Consoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Consoles_Usuarios" Association="Self.FK_Consoles_Usuarios">
+            <End Role="Usuarios" EntitySet="Usuarios" />
+            <End Role="Consoles" EntitySet="Consoles" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="PruebaTecnicaModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Usuario">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="email" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+          <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="username" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="full_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="is_active" Type="Boolean" />
+          <Property Name="salt" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Consoles" Relationship="PruebaTecnicaModel.FK_Consoles_Consoles" FromRole="Usuario" ToRole="Console" />
+          <NavigationProperty Name="Consoles1" Relationship="PruebaTecnicaModel.FK_Consoles_Usuarios" FromRole="Usuario" ToRole="Console" />
+        </EntityType>
+        <EntityContainer Name="PruebaTecnicaEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Usuarios" EntityType="Self.Usuario" />
+          <EntitySet Name="Brands" EntityType="PruebaTecnicaModel.Brand" />
+          <EntitySet Name="Consoles" EntityType="PruebaTecnicaModel.Console" />
+          <AssociationSet Name="FK_Consoles_Consoles" Association="PruebaTecnicaModel.FK_Consoles_Consoles">
+            <End Role="Usuario" EntitySet="Usuarios" />
+            <End Role="Console" EntitySet="Consoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Consoles_Usuarios" Association="PruebaTecnicaModel.FK_Consoles_Usuarios">
+            <End Role="Usuario" EntitySet="Usuarios" />
+            <End Role="Console" EntitySet="Consoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Consoles_Brand1" Association="PruebaTecnicaModel.FK_Consoles_Brand1">
+            <End Role="Brand" EntitySet="Brands" />
+            <End Role="Console" EntitySet="Consoles" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Brand">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="description" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Consoles" Relationship="PruebaTecnicaModel.FK_Consoles_Brand1" FromRole="Brand" ToRole="Console" />
+        </EntityType>
+        <EntityType Name="Console">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="brand_id" Type="Int32" Nullable="false" />
+          <Property Name="release_date" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="storage_capacity" Type="Int32" Nullable="false" />
+          <Property Name="price" Type="Decimal" Nullable="false" Precision="10" Scale="2" />
+          <Property Name="comment" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="user_created_id" Type="Int32" Nullable="false" />
+          <Property Name="created_date" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="user_modified_id" Type="Int32" />
+          <Property Name="modified_date" Type="DateTime" Precision="0" />
+          <Property Name="is_active" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Usuario" Relationship="PruebaTecnicaModel.FK_Consoles_Consoles" FromRole="Console" ToRole="Usuario" />
+          <NavigationProperty Name="Usuario1" Relationship="PruebaTecnicaModel.FK_Consoles_Usuarios" FromRole="Console" ToRole="Usuario" />
+          <NavigationProperty Name="Brand1" Relationship="PruebaTecnicaModel.FK_Consoles_Brand1" FromRole="Console" ToRole="Brand" />
+        </EntityType>
+        <Association Name="FK_Consoles_Consoles">
+          <End Type="PruebaTecnicaModel.Usuario" Role="Usuario" Multiplicity="1" />
+          <End Type="PruebaTecnicaModel.Console" Role="Console" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Console">
+              <PropertyRef Name="user_created_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Consoles_Usuarios">
+          <End Type="PruebaTecnicaModel.Usuario" Role="Usuario" Multiplicity="0..1" />
+          <End Type="PruebaTecnicaModel.Console" Role="Console" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Console">
+              <PropertyRef Name="user_modified_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Consoles_Brand1">
+          <End Type="PruebaTecnicaModel.Brand" Role="Brand" Multiplicity="1" />
+          <End Type="PruebaTecnicaModel.Console" Role="Console" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Brand">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Console">
+              <PropertyRef Name="brand_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="PruebaTecnicaModelStoreContainer" CdmEntityContainer="PruebaTecnicaEntities">
+          <EntitySetMapping Name="Usuarios">
+            <EntityTypeMapping TypeName="PruebaTecnicaModel.Usuario">
+              <MappingFragment StoreEntitySet="Usuarios">
+                <ScalarProperty Name="salt" ColumnName="salt" />
+                <ScalarProperty Name="is_active" ColumnName="is_active" />
+                <ScalarProperty Name="full_name" ColumnName="full_name" />
+                <ScalarProperty Name="username" ColumnName="username" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Brands">
+            <EntityTypeMapping TypeName="PruebaTecnicaModel.Brand">
+              <MappingFragment StoreEntitySet="Brand">
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Consoles">
+            <EntityTypeMapping TypeName="PruebaTecnicaModel.Console">
+              <MappingFragment StoreEntitySet="Consoles">
+                <ScalarProperty Name="is_active" ColumnName="is_active" />
+                <ScalarProperty Name="modified_date" ColumnName="modified_date" />
+                <ScalarProperty Name="user_modified_id" ColumnName="user_modified_id" />
+                <ScalarProperty Name="created_date" ColumnName="created_date" />
+                <ScalarProperty Name="user_created_id" ColumnName="user_created_id" />
+                <ScalarProperty Name="comment" ColumnName="comment" />
+                <ScalarProperty Name="price" ColumnName="price" />
+                <ScalarProperty Name="storage_capacity" ColumnName="storage_capacity" />
+                <ScalarProperty Name="release_date" ColumnName="release_date" />
+                <ScalarProperty Name="brand_id" ColumnName="brand_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
